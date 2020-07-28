@@ -29,10 +29,8 @@ const useStyles = makeStyles(theme => ({
   },
   links: {
     padding : theme.spacing(2),
-    marginTop: theme.spacing(1),
     width : "100%",
     display : "inline",
-    fontSize : "1.2rem",
     alignItems: 'center',
     color : "green"
   },
@@ -164,8 +162,8 @@ export default function Home() {
                 onChange={e => setLongUrl(e.target.value)}
               />
             </Grid>
-            <Grid item md={8}></Grid>
-            <Grid item md={4} sm={12}>
+            <Grid item md={8} xs={6}></Grid>
+            <Grid item md={4} xs={6}>
               <Button
                 onClick = {() => submit()}
                 fullWidth

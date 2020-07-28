@@ -5,7 +5,7 @@ import 'toastr/build/toastr.css';
 
 export default function Navigate() {
 	const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
+  const urlParams = new URLSearchParams(queryString);
 	useEffect(() => {
 		$.ajax({
           type: "GET",

@@ -9,6 +9,7 @@ from models.urls import Urls
 
 fake = Faker()
 Faker.seed(0)
+store = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
 class shortener:
 
@@ -23,6 +24,10 @@ class shortener:
 
 			if long_url == "":
 				raise Exception("Long url cannot be empty")
+
+
+
+			maxNumOfChar = 6 #It can be changed dynamically based on the length of input string
 
 			#Regex to validate the url format (Can be done in client side)
 			# r0 = urlparse(long_url)
@@ -42,7 +47,7 @@ class shortener:
 			flag = True
 			retry = 3
 			while(retry > 0 and flag):
-				short_url = fake.bothify(text='?????#####')
+				short_url = fake.lexify(text='?'*maxNumOfChar, letters=store)
 				try:
 					url_doc = Urls()
 					url_doc.short_url = short_url

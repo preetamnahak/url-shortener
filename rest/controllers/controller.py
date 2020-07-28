@@ -13,7 +13,7 @@ def fetchShortUrl():
 
 
 @app.route('/fetch-long-url/<short_url>', methods=["GET"])
-@cache.cached(timeout=5) #timeout 5 seconds
+@cache.cached(timeout=300) #timeout 5 Minutes
 def fetchLongUrl(short_url):
 	return shortener.fetchLongUrl(short_url)
 	
