@@ -33,8 +33,6 @@ class shortener:
 			#Check if any short_url corresponding to the longurl already exists
 			try:
 				object_fetched = Urls.objects.get(long_url=long_url)
-				object_fetched = object_fetched.to_mongo().to_dict()
-				del object_fetched['_id']
 				return {"status" : "success", "message" : object_fetched["short_url"]}
 			except:
 				pass
@@ -54,6 +52,7 @@ class shortener:
 
 					flag = False
 				except:
+					logging.warning("Retrying with retry #%s", str(retry))
 					retry = retry - 1
 
 			if not flag:
@@ -65,10 +64,32 @@ class shortener:
 			disconnect(alias=alias_name)
 			disconnect(alias="default")
 		except Exception as e:
-			logging.warning("[services.url.shortener] - %s", e)
+			logging.warning("[services.url.shortener.fetchShortUrl] - %s", e)
 			return {"status" : "failure", "message" : str(e)}
 
 	@staticmethod
 	def fetchLongUrl(short_url):
+		alias_name = "_CREATE_"+str(random.randint(100000000,999999999))
+		try:
+			db_name = "url_db"
+			connect(db=db_name, alias="default", host=os.environ["DB_URL"])
+			connect(db=db_name, alias=alias_name, host=os.environ["DB_URL"])
+
+			if short_url == "":
+				raise Exception("Short url cannot be empty")
+
+			#Try to fetch it from cache first else perform db query
+			try:
+				object_fetched = Urls.objects.get(short_url=short_url)
+				return {"status" : "success", "message" : object_fetched["long_url"]}
+			except:
+				raise Exception("Could not find matching URL")
+
+
+			disconnect(alias=alias_name)
+			disconnect(alias="default")
+		except Exception as e:
+			logging.warning("[services.url.shortener.fetchLongUrl] - %s", e)
+			return {"status" : "failure", "message" : str(e)}
 		pass
 

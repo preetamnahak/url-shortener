@@ -9,6 +9,7 @@ verify_ssl = true
 flask = "*"
 faker = "*"
 mongoengine = "*"
+pymongo = "*"
 
 [requires]
 python_version = "3.7"
