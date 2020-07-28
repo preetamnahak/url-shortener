@@ -1,5 +1,5 @@
 # url-shortener
-This repo contains the url-shortener application necessary for the task submission for ITILITE.
+This repo contains the url-shortener application necessary for the task submission for ITILITE. Major things that are taken care of are caching of URL clicks, stale record removal. I am planning to add URL validation and dynamic length short URL scheme to it.
 
 Go to *YOUR_PREFERRED_DIRECTORY* and clone the repo using `git clone https://github.com/preetamnahak007/url-shortener`.
 
