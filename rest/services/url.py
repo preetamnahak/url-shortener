@@ -47,7 +47,7 @@ class shortener:
 					url_doc = Urls()
 					url_doc.short_url = short_url
 					url_doc.long_url = long_url
-					url_doc.created_at = str(int(time.time()))
+					url_doc.created_at = time.time()
 					url_doc.save()
 
 					flag = False
@@ -78,9 +78,11 @@ class shortener:
 			if short_url == "":
 				raise Exception("Short url cannot be empty")
 
-			#Try to fetch it from cache first else perform db query
 			try:
+				logging.warning("[services.url.shortener.fetchLongUrl] - Running fresh query. Not from cache")
 				object_fetched = Urls.objects.get(short_url=short_url)
+				#Update the last_clicked_on timestamp in order to use it further for stale records
+				Urls.objects.get(short_url=short_url).update(last_clicked_on=time.time())
 				return {"status" : "success", "message" : object_fetched["long_url"]}
 			except:
 				raise Exception("Could not find matching URL")
@@ -91,5 +93,4 @@ class shortener:
 		except Exception as e:
 			logging.warning("[services.url.shortener.fetchLongUrl] - %s", e)
 			return {"status" : "failure", "message" : str(e)}
-		pass
 

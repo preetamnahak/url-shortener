@@ -1,8 +1,9 @@
 from flask import Flask, request
 from services.url import shortener
+from flask_caching import Cache 
 
 app = Flask(__name__)
-
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 
 @app.route('/fetch-short-url', methods=["POST"])
@@ -11,8 +12,8 @@ def fetchShortUrl():
 	return shortener.fetchShortUrl(long_url)
 
 
-@app.route('/fetch-long-url', methods=["POST"])
-def fetchLongUrl():
-	short_url = request.form['short_url']
+@app.route('/fetch-long-url/<short_url>', methods=["GET"])
+@cache.cached(timeout=5) #timeout 5 seconds
+def fetchLongUrl(short_url):
 	return shortener.fetchLongUrl(short_url)
 	
